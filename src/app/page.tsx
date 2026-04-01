@@ -1,5 +1,5 @@
 import BreakingNewsBanner from "@/components/breaking-news-banner";
-import ArticleCard from "@/components/article-card";
+import FeaturedArticles from "@/components/featured-articles";
 
 export default function HomePage() {
   return (
@@ -22,23 +22,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-6xl px-4 pb-16">
-        <div className="mb-6 flex items-center justify-between">
-          <h2 className="text-2xl font-semibold tracking-tight">
-            Featured Articles
-          </h2>
-          <p className="text-sm text-white/60">Placeholder content</p>
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <ArticleCard />
-          <ArticleCard />
-          <ArticleCard />
-          <ArticleCard />
-          <ArticleCard />
-          <ArticleCard />
-        </div>
-      </section>
+      <FeaturedArticles />
     </div>
   );
 }
