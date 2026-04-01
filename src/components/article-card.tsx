@@ -1,11 +1,7 @@
+import type { Article } from "@/lib/articles";
+
 type ArticleCardProps = {
-  article: {
-    id: string;
-    title: string;
-    excerpt: string;
-    category: string;
-    publishedAt: string;
-  };
+  article: Article;
 };
 
 export default function ArticleCard({ article }: ArticleCardProps) {

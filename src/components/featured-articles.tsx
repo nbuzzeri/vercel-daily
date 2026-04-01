@@ -1,6 +1,7 @@
 import ArticleCard from "@/components/article-card";
+import type { Article } from "@/lib/articles";
 
-const featuredArticles = [
+const featuredArticles: Article[] = [
   {
     id: "1",
     title: "Lorem ipsum dolor sit amet",
@@ -47,7 +48,7 @@ const featuredArticles = [
 
 export default function FeaturedArticles() {
   return (
-    <section className="flex flex-col gap-4 mx-auto max-w-6xl px-4 py-16">
+    <section className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-16">
       <h2>Featured Articles</h2>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
