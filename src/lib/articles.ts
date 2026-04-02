@@ -13,6 +13,7 @@ export type Article = {
   category: ArticleCategory;
   image: string;
   publishedAt: string;
+  content: string;
 };
 
 export const mockArticles: Article[] = [
@@ -24,6 +25,8 @@ export const mockArticles: Article[] = [
     category: "engineering",
     image: "/placeholder.jpg",
     publishedAt: "April 1, 2026",
+    content:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.",
   },
   {
     id: "2",
@@ -33,6 +36,8 @@ export const mockArticles: Article[] = [
     category: "company-news",
     image: "/placeholder.jpg",
     publishedAt: "April 1, 2026",
+    content:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.",
   },
   {
     id: "3",
@@ -42,6 +47,8 @@ export const mockArticles: Article[] = [
     category: "changelog",
     image: "/placeholder.jpg",
     publishedAt: "April 1, 2026",
+    content:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.",
   },
   {
     id: "4",
@@ -51,6 +58,8 @@ export const mockArticles: Article[] = [
     category: "customers",
     image: "/placeholder.jpg",
     publishedAt: "April 1, 2026",
+    content:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.",
   },
   {
     id: "5",
@@ -60,6 +69,8 @@ export const mockArticles: Article[] = [
     category: "community",
     image: "/placeholder.jpg",
     publishedAt: "April 1, 2026",
+    content:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.",
   },
   {
     id: "6",
@@ -69,5 +80,11 @@ export const mockArticles: Article[] = [
     category: "engineering",
     image: "/placeholder.jpg",
     publishedAt: "April 1, 2026",
+    content:
+      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Lorem ipsum dolor sit amet consectetur adipisicing elit.",
   },
 ];
+
+export function getArticleBySlug(slug: string) {
+  return mockArticles.find((article) => article.slug === slug);
+}

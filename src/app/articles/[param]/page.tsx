@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { mockArticles } from "@/lib/articles";
+import { getArticleBySlug } from "@/lib/articles";
 
 type ArticlePageProps = {
   params: Promise<{
@@ -9,22 +9,31 @@ type ArticlePageProps = {
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { param } = await params;
-
-  const article = mockArticles.find((item) => item.slug === param);
+  const article = getArticleBySlug(param);
 
   if (!article) {
     notFound();
   }
 
   return (
-    <section className="mx-auto flex max-w-4xl flex-col gap-6 px-4 py-16">
-      <p className="text-sm text-white/60">{article.category}</p>
+    <article className="mx-auto flex max-w-3xl flex-col gap-6 px-4 py-16">
+      <div className="flex flex-col gap-2">
+        <p className="text-sm text-white/60">{article.category}</p>
 
-      <h1 className="text-3xl font-semibold">{article.title}</h1>
+        <h1 className="text-3xl font-semibold leading-tight">
+          {article.title}
+        </h1>
 
-      <p className="text-sm text-white/50">{article.publishedAt}</p>
+        <p className="text-sm text-white/50">{article.publishedAt}</p>
+      </div>
 
-      <p className="text-white/70">{article.excerpt}</p>
-    </section>
+      <div className="h-64 w-full bg-white/10 flex items-center justify-center">
+        <p className="text-sm text-white/50">image</p>
+      </div>
+
+      <div className="flex flex-col gap-4 text-white/80 leading-7">
+        <p>{article.content}</p>
+      </div>
+    </article>
   );
 }
