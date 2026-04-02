@@ -1,9 +1,22 @@
 import ArticleCard from "@/components/article-card";
 import SearchForm from "@/components/search-form";
-import { mockArticles } from "@/lib/articles";
+import { mockArticles, searchArticles } from "@/lib/articles";
 
-export default function SearchPage() {
-  const searchResults = mockArticles.slice(0, 5);
+type SearchPageProps = {
+  searchParams: Promise<{
+    q?: string;
+    category?: string;
+  }>;
+};
+
+export default async function SearchPage({ searchParams }: SearchPageProps) {
+  const { q, category } = await searchParams;
+
+  const hasSearch = Boolean(q || category);
+
+  const results = hasSearch
+    ? searchArticles({ query: q, category })
+    : mockArticles.slice(0, 5);
 
   return (
     <section className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-16">
@@ -24,13 +37,19 @@ export default function SearchPage() {
       <SearchForm />
 
       <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-semibold">Results</h2>
+        <h2 className="text-2xl font-semibold">
+          {hasSearch ? "Search Results" : "Recent Articles"}
+        </h2>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {searchResults.map((article) => (
-            <ArticleCard key={article.id} article={article} />
-          ))}
-        </div>
+        {results.length > 0 ? (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {results.map((article) => (
+              <ArticleCard key={article.id} article={article} />
+            ))}
+          </div>
+        ) : (
+          <p className="text-white/60">No articles matched your search.</p>
+        )}
       </div>
     </section>
   );

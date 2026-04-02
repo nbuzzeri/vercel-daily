@@ -88,3 +88,22 @@ export const mockArticles: Article[] = [
 export function getArticleBySlug(slug: string) {
   return mockArticles.find((article) => article.slug === slug);
 }
+
+export function searchArticles({
+  query,
+  category,
+}: {
+  query?: string;
+  category?: string;
+}) {
+  return mockArticles.filter((article) => {
+    const matchesQuery = query
+      ? article.title.toLowerCase().includes(query.toLowerCase()) ||
+        article.excerpt.toLowerCase().includes(query.toLowerCase())
+      : true;
+
+    const matchesCategory = category ? article.category === category : true;
+
+    return matchesQuery && matchesCategory;
+  });
+}
