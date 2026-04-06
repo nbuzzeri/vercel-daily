@@ -11,3 +11,9 @@ export async function subscribeAction() {
     path: "/",
   });
 }
+
+export async function unsubscribeAction() {
+  const cookieStore = await cookies();
+
+  cookieStore.delete("vercel-daily-subscribed");
+}

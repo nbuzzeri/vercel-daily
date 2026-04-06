@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
 import SubscribeButton from "@/components/subscribe-button";
+import UnsubscribeButton from "@/components/unsubscribe-button";
 
 export default async function Header() {
   const cookieStore = await cookies();
@@ -27,13 +28,7 @@ export default async function Header() {
               </Link>
             </li>
             <li>
-              {isSubscribed ? (
-                <span className="rounded-full border border-white/15 px-4 py-2 text-sm">
-                  Subscribed
-                </span>
-              ) : (
-                <SubscribeButton />
-              )}
+              {isSubscribed ? <UnsubscribeButton /> : <SubscribeButton />}
             </li>
           </ul>
         </nav>
