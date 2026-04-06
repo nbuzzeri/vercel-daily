@@ -1,4 +1,7 @@
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
+
+import PaywallCTA from "@/components/paywall-cta";
 import TrendingArticles from "@/components/trending-articles";
 import { getArticleBySlug } from "@/lib/articles";
 
@@ -15,6 +18,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   if (!article) {
     notFound();
   }
+
+  const cookieStore = await cookies();
+  const isSubscribed =
+    cookieStore.get("vercel-daily-subscribed")?.value === "true";
 
   return (
     <>
@@ -33,10 +40,20 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <p className="text-sm text-white/50">image</p>
         </div>
 
-        <div className="flex flex-col gap-4 leading-7 text-white/80">
-          <p className="text-lg text-white/70">{article.excerpt}</p>
-          <p>{article.content}</p>
-        </div>
+        {isSubscribed ? (
+          <div className="flex flex-col gap-4 leading-7 text-white/80">
+            <p className="text-lg text-white/70">{article.excerpt}</p>
+            <p>{article.content}</p>
+          </div>
+        ) : (
+          <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4 leading-7 text-white/80">
+              <p className="text-lg text-white/70">{article.excerpt}</p>
+            </div>
+
+            <PaywallCTA />
+          </div>
+        )}
       </article>
 
       <TrendingArticles />
