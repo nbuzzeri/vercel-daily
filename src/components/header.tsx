@@ -1,7 +1,12 @@
 import Link from "next/link";
+import { cookies } from "next/headers";
 import SubscribeButton from "@/components/subscribe-button";
 
-export default function Header() {
+export default async function Header() {
+  const cookieStore = await cookies();
+  const isSubscribed =
+    cookieStore.get("vercel-daily-subscribed")?.value === "true";
+
   return (
     <header className="border-b border-white/10">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
@@ -22,7 +27,13 @@ export default function Header() {
               </Link>
             </li>
             <li>
-              <SubscribeButton />
+              {isSubscribed ? (
+                <span className="rounded-full border border-white/15 px-4 py-2 text-sm">
+                  Subscribed
+                </span>
+              ) : (
+                <SubscribeButton />
+              )}
             </li>
           </ul>
         </nav>
