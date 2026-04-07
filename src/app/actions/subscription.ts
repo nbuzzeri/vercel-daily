@@ -1,19 +1,37 @@
 "use server";
 
-import { cookies } from "next/headers";
+import {
+  activateSubscription,
+  createSubscription,
+  deactivateSubscription,
+} from "@/lib/api";
+
+import {
+  clearSubscriptionCookies,
+  getSubscriptionState,
+  setSubscriptionCookies,
+} from "@/lib/subscription";
 
 export async function subscribeAction() {
-  const cookieStore = await cookies();
+  const { token } = await getSubscriptionState();
 
-  cookieStore.set("vercel-daily-subscribed", "true", {
-    httpOnly: true,
-    sameSite: "lax",
-    path: "/",
-  });
+  if (token) {
+    await activateSubscription(token);
+    await setSubscriptionCookies(token);
+    return;
+  }
+
+  const created = await createSubscription();
+  await activateSubscription(created.token);
+  await setSubscriptionCookies(created.token);
 }
 
 export async function unsubscribeAction() {
-  const cookieStore = await cookies();
+  const { token } = await getSubscriptionState();
 
-  cookieStore.delete("vercel-daily-subscribed");
+  if (token) {
+    await deactivateSubscription(token);
+  }
+
+  await clearSubscriptionCookies();
 }

@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import Image from "next/image";
-import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
 import ArticleContent from "@/components/article-content";
@@ -8,6 +7,7 @@ import PaywallCTA from "@/components/paywall-cta";
 import TrendingArticles from "@/components/trending-articles";
 import { getArticleBySlug } from "@/lib/api";
 import { formatPublishedDate, imageSizes } from "@/lib/media";
+import { getSubscriptionState } from "@/lib/subscription";
 
 type ArticlePageProps = {
   params: Promise<{
@@ -60,9 +60,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
-  const cookieStore = await cookies();
-  const isSubscribed =
-    cookieStore.get("vercel-daily-subscribed")?.value === "true";
+  const { isSubscribed } = await getSubscriptionState();
 
   return (
     <>

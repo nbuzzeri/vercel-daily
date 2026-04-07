@@ -1,12 +1,11 @@
 import Link from "next/link";
-import { cookies } from "next/headers";
+
 import SubscribeButton from "@/components/subscribe-button";
 import UnsubscribeButton from "@/components/unsubscribe-button";
+import { getSubscriptionState } from "@/lib/subscription";
 
 export default async function Header() {
-  const cookieStore = await cookies();
-  const isSubscribed =
-    cookieStore.get("vercel-daily-subscribed")?.value === "true";
+  const { isSubscribed } = await getSubscriptionState();
 
   return (
     <header className="border-b border-white/10">

@@ -95,3 +95,69 @@ export async function searchArticles({
 
   return apiFetch<Article[]>(`/articles?${params.toString()}`);
 }
+
+export type SubscriptionStatus = {
+  token: string;
+  status: "active" | "inactive";
+  subscribedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export async function createSubscription() {
+  const response = await fetch(`${API_BASE_URL}/subscription/create`, {
+    method: "POST",
+    headers: {
+      "x-vercel-protection-bypass": BYPASS_TOKEN,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `API request failed: ${response.status} ${response.statusText}`,
+    );
+  }
+
+  const token = response.headers.get("x-subscription-token");
+
+  if (!token) {
+    throw new Error("Missing x-subscription-token response header");
+  }
+
+  const json = (await response.json()) as ApiResponse<SubscriptionStatus>;
+
+  if (!json.success) {
+    throw new Error(json.error.message);
+  }
+
+  return {
+    token,
+    subscription: json.data,
+  };
+}
+
+export async function getSubscription(token: string) {
+  return apiFetch<SubscriptionStatus>("/subscription", {
+    headers: {
+      "x-subscription-token": token,
+    },
+  });
+}
+
+export async function activateSubscription(token: string) {
+  return apiFetch<SubscriptionStatus>("/subscription", {
+    method: "POST",
+    headers: {
+      "x-subscription-token": token,
+    },
+  });
+}
+
+export async function deactivateSubscription(token: string) {
+  return apiFetch<SubscriptionStatus>("/subscription", {
+    method: "DELETE",
+    headers: {
+      "x-subscription-token": token,
+    },
+  });
+}
