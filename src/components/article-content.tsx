@@ -1,4 +1,7 @@
+import Image from "next/image";
+
 import type { ContentBlock } from "@/lib/articles";
+import { imageSizes } from "@/lib/media";
 
 type ArticleContentProps = {
   content: ContentBlock[];
@@ -54,11 +57,16 @@ export default function ArticleContent({ content }: ArticleContentProps) {
           case "image":
             return (
               <figure key={index} className="flex flex-col gap-2">
-                <img
-                  src={block.src}
-                  alt={block.alt}
-                  className="h-auto w-full rounded-lg"
-                />
+                <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+                  <Image
+                    src={block.src}
+                    alt={block.alt}
+                    fill
+                    sizes={imageSizes.content}
+                    className="object-cover"
+                  />
+                </div>
+
                 {block.caption ? (
                   <figcaption className="text-sm text-white/50">
                     {block.caption}

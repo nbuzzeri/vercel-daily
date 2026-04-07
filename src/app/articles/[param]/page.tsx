@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+import { Metadata } from "next";
+import Image from "next/image";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
@@ -6,6 +7,7 @@ import ArticleContent from "@/components/article-content";
 import PaywallCTA from "@/components/paywall-cta";
 import TrendingArticles from "@/components/trending-articles";
 import { getArticleBySlug } from "@/lib/api";
+import { formatPublishedDate, imageSizes } from "@/lib/media";
 
 type ArticlePageProps = {
   params: Promise<{
@@ -70,11 +72,20 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
           <h1 className="text-3xl font-semibold">{article.title}</h1>
 
-          <p className="text-sm text-white/50">{article.publishedAt}</p>
+          <p className="text-sm text-white/50">
+            {formatPublishedDate(article.publishedAt)}
+          </p>
         </div>
 
-        <div className="flex h-64 w-full items-center justify-center bg-white/10">
-          <p className="text-sm text-white/50">image</p>
+        <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+          <Image
+            src={article.image}
+            alt={article.title}
+            fill
+            sizes={imageSizes.articleHero}
+            className="object-cover"
+            priority
+          />
         </div>
 
         {isSubscribed ? (
