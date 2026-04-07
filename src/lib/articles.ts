@@ -92,7 +92,15 @@ export type ApiError = {
 
 export type ApiResponse<T> = ApiSuccess<T> | ApiError;
 
-export type BreakingNews = Record<string, unknown>;
+export type BreakingNews = {
+  id: string;
+  headline: string;
+  summary: string;
+  articleId: string;
+  category: ArticleCategory;
+  publishedAt: string;
+  urgent: boolean;
+};
 
 export function isArticleCategory(value: string): value is ArticleCategory {
   return [
