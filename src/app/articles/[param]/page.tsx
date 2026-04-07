@@ -71,6 +71,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <h1 className="text-3xl font-semibold">{article.title}</h1>
 
           <p className="text-sm text-white/50">
+            By {article.author.name} ·{" "}
             {formatPublishedDate(article.publishedAt)}
           </p>
         </div>
