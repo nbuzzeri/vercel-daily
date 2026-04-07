@@ -1,8 +1,8 @@
 import ArticleCard from "@/components/article-card";
-import { mockArticles } from "@/lib/articles";
+import { getTrendingArticles } from "@/lib/api";
 
-export default function TrendingArticles() {
-  const trendingArticles = mockArticles.slice(0, 3);
+export default async function TrendingArticles() {
+  const trendingArticles = await getTrendingArticles();
 
   return (
     <section className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-16">

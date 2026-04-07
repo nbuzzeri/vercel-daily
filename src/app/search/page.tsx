@@ -1,6 +1,7 @@
 import ArticleCard from "@/components/article-card";
 import SearchForm from "@/components/search-form";
-import { mockArticles, searchArticles } from "@/lib/articles";
+import { searchArticles } from "@/lib/api";
+import { isArticleCategory } from "@/lib/articles";
 
 type SearchPageProps = {
   searchParams: Promise<{
@@ -12,11 +13,16 @@ type SearchPageProps = {
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const { q, category } = await searchParams;
 
-  const hasSearch = Boolean(q || category);
+  const normalizedCategory =
+    category && isArticleCategory(category) ? category : undefined;
 
-  const results = hasSearch
-    ? searchArticles({ query: q, category })
-    : mockArticles.slice(0, 5);
+  const hasSearch = Boolean(q || normalizedCategory);
+
+  const results = await searchArticles({
+    query: q,
+    category: normalizedCategory,
+    limit: 5,
+  });
 
   return (
     <section className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-16">
@@ -34,7 +40,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
         </p>
       </div>
 
-      <SearchForm query={q} category={category} />
+      <SearchForm query={q} category={normalizedCategory} />
 
       <div className="flex flex-col gap-4">
         <h2 className="text-2xl font-semibold">

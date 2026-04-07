@@ -1,9 +1,10 @@
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
+import ArticleContent from "@/components/article-content";
 import PaywallCTA from "@/components/paywall-cta";
 import TrendingArticles from "@/components/trending-articles";
-import { getArticleBySlug } from "@/lib/articles";
+import { getArticleBySlug } from "@/lib/api";
 
 type ArticlePageProps = {
   params: Promise<{
@@ -13,7 +14,7 @@ type ArticlePageProps = {
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { param } = await params;
-  const article = getArticleBySlug(param);
+  const article = await getArticleBySlug(param);
 
   if (!article) {
     notFound();
@@ -29,7 +30,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <div className="flex flex-col gap-2">
           <p className="text-sm text-white/60">{article.category}</p>
 
-          <h1 className="text-3xl font-semibold leading-tight">
+          <h1 className="text-3xl font-semibold">
             {article.title}
           </h1>
 
@@ -41,13 +42,13 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         </div>
 
         {isSubscribed ? (
-          <div className="flex flex-col gap-4 leading-7 text-white/80">
+          <div className="flex flex-col gap-4">
             <p className="text-lg text-white/70">{article.excerpt}</p>
-            <p>{article.content}</p>
+            <ArticleContent content={article.content} />
           </div>
         ) : (
           <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-4 leading-7 text-white/80">
+            <div className="flex flex-col gap-4 text-white/80">
               <p className="text-lg text-white/70">{article.excerpt}</p>
             </div>
 
