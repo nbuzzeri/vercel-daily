@@ -1,7 +1,19 @@
+import type { Metadata } from "next";
+
 import ArticleCard from "@/components/article-card";
 import SearchForm from "@/components/search-form";
 import { searchArticles } from "@/lib/api";
 import { isArticleCategory } from "@/lib/articles";
+
+export const metadata: Metadata = {
+  title: "Search",
+  description: "Search Vercel Daily articles by keyword and category.",
+  openGraph: {
+    title: "Search | Vercel Daily",
+    description: "Search Vercel Daily articles by keyword and category.",
+    url: "/search",
+  },
+};
 
 type SearchPageProps = {
   searchParams: Promise<{

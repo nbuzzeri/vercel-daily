@@ -1,5 +1,19 @@
+import type { Metadata } from "next";
+
 import BreakingNewsBanner from "@/components/breaking-news-banner";
 import FeaturedArticles from "@/components/featured-articles";
+
+export const metadata: Metadata = {
+  title: "Home",
+  description:
+    "Browse featured stories, breaking news, and the latest updates from Vercel Daily.",
+  openGraph: {
+    title: "Vercel Daily",
+    description:
+      "Browse featured stories, breaking news, and the latest updates from Vercel Daily.",
+    url: "/",
+  },
+};
 
 export default function HomePage() {
   return (

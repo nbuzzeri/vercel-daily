@@ -15,9 +15,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Vercel Daily",
+  title: {
+    default: "Vercel Daily",
+    template: "%s | Vercel Daily",
+  },
   description:
-    "A news publication website using Next.js 16 to demonstrate my understanding of modern React Server Component patterns",
+    "A news publication website using Next.js 16 to demonstrate my understanding of modern React Server Component patterns.",
+  openGraph: {
+    type: "website",
+    siteName: "Vercel Daily",
+    title: "Vercel Daily",
+    description:
+      "A news publication website using Next.js 16 to demonstrate my understanding of modern React Server Component patterns.",
+  },
 };
 
 export default function RootLayout({

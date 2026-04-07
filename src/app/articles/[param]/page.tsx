@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 
@@ -11,6 +12,43 @@ type ArticlePageProps = {
     param: string;
   }>;
 };
+
+export async function generateMetadata({
+  params,
+}: ArticlePageProps): Promise<Metadata> {
+  const { param } = await params;
+  const article = await getArticleBySlug(param);
+
+  if (!article) {
+    return {
+      title: "Article Not Found",
+    };
+  }
+
+  return {
+    title: article.title,
+    description: article.excerpt,
+    openGraph: {
+      type: "article",
+      title: article.title,
+      description: article.excerpt,
+      url: `/articles/${article.slug}`,
+      images: [
+        {
+          url: article.image,
+          alt: article.title,
+        },
+      ],
+      publishedTime: article.publishedAt,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.excerpt,
+      images: [article.image],
+    },
+  };
+}
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { param } = await params;
@@ -30,9 +68,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         <div className="flex flex-col gap-2">
           <p className="text-sm text-white/60">{article.category}</p>
 
-          <h1 className="text-3xl font-semibold">
-            {article.title}
-          </h1>
+          <h1 className="text-3xl font-semibold">{article.title}</h1>
 
           <p className="text-sm text-white/50">{article.publishedAt}</p>
         </div>
