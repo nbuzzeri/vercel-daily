@@ -21,6 +21,7 @@ export default function ArticleCard({ article }: ArticleCardProps) {
           fill
           sizes={imageSizes.card}
           className="object-cover"
+          loading="eager"
         />
       </div>
 

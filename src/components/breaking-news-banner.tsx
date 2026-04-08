@@ -18,12 +18,12 @@ export default async function BreakingNewsBanner() {
           </span>
 
           <div className="min-w-0">
-            <p className="truncate text-sm font-semibold sm:text-base">
-              {breakingNews.headline}
-            </p>
-
             <p className="text-xs uppercase tracking-wide text-red-100 sm:text-sm">
               {formatCategoryLabel(breakingNews.category)}
+            </p>
+
+            <p className="truncate text-sm font-semibold sm:text-base">
+              {breakingNews.headline}
             </p>
           </div>
         </div>
