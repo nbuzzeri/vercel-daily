@@ -1,15 +1,26 @@
 import { Metadata } from "next";
 import Image from "next/image";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 
 import ArticleContent from "@/components/article-content";
 import PaywallCTA from "@/components/paywall-cta";
 import TrendingArticles from "@/components/trending-articles";
+import ArticleContentFallback from "@/components/fallbacks/article-content-fallback";
+import TrendingArticlesFallback from "@/components/fallbacks/trending-article-fallback";
 import { getArticleBySlug } from "@/lib/api";
 import { formatPublishedDate, imageSizes } from "@/lib/media";
 import { getSubscriptionState } from "@/lib/subscription";
+import { ArticleContentSectionProps } from "@/lib/types";
+import ArticlePageShellFallback from "@/components/fallbacks/article-page-shell-fallback";
 
 type ArticlePageProps = {
+  params: Promise<{
+    param: string;
+  }>;
+};
+
+type ArticlePageContentProps = {
   params: Promise<{
     param: string;
   }>;
@@ -52,15 +63,36 @@ export async function generateMetadata({
   };
 }
 
-export default async function ArticlePage({ params }: ArticlePageProps) {
+async function ArticleContentSection({ article }: ArticleContentSectionProps) {
+  const { isSubscribed } = await getSubscriptionState();
+
+  if (isSubscribed) {
+    return (
+      <div className="flex flex-col gap-4">
+        <p className="text-lg text-white/70">{article.excerpt}</p>
+        <ArticleContent content={article.content} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4 text-white/80">
+        <p className="text-lg text-white/70">{article.excerpt}</p>
+      </div>
+
+      <PaywallCTA />
+    </div>
+  );
+}
+
+async function ArticlePageContent({ params }: ArticlePageContentProps) {
   const { param } = await params;
   const article = await getArticleBySlug(param);
 
   if (!article) {
     notFound();
   }
-
-  const { isSubscribed } = await getSubscriptionState();
 
   return (
     <>
@@ -87,23 +119,22 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           />
         </div>
 
-        {isSubscribed ? (
-          <div className="flex flex-col gap-4">
-            <p className="text-lg text-white/70">{article.excerpt}</p>
-            <ArticleContent content={article.content} />
-          </div>
-        ) : (
-          <div className="flex flex-col gap-6">
-            <div className="flex flex-col gap-4 text-white/80">
-              <p className="text-lg text-white/70">{article.excerpt}</p>
-            </div>
-
-            <PaywallCTA />
-          </div>
-        )}
+        <Suspense fallback={<ArticleContentFallback article={article} />}>
+          <ArticleContentSection article={article} />
+        </Suspense>
       </article>
 
-      <TrendingArticles />
+      <Suspense fallback={<TrendingArticlesFallback />}>
+        <TrendingArticles />
+      </Suspense>
     </>
+  );
+}
+
+export default function ArticlePage({ params }: ArticlePageProps) {
+  return (
+    <Suspense fallback={<ArticlePageShellFallback />}>
+      <ArticlePageContent params={params} />
+    </Suspense>
   );
 }

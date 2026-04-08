@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 import BreakingNewsBanner from "@/components/breaking-news-banner";
 import FeaturedArticles from "@/components/featured-articles";
+import BreakingNewsBannerFallback from "@/components/fallbacks/breaking-news-banner-fallback";
+import FeaturedArticlesFallback from "@/components/fallbacks/featured-article-fallback";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -18,7 +21,9 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <div>
-      <BreakingNewsBanner />
+      <Suspense fallback={<BreakingNewsBannerFallback />}>
+        <BreakingNewsBanner />
+      </Suspense>
 
       <section className="mx-auto max-w-6xl px-4 py-16">
         <div className="max-w-3xl">
@@ -29,14 +34,12 @@ export default function HomePage() {
           <h1 className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl">
             Vercel Daily
           </h1>
-
-          <p className="mt-6 text-base leading-7 text-white/70 sm:text-lg">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio, eius?
-          </p>
         </div>
       </section>
 
-      <FeaturedArticles />
+      <Suspense fallback={<FeaturedArticlesFallback />}>
+        <FeaturedArticles />
+      </Suspense>
     </div>
   );
 }
