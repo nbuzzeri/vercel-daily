@@ -7,7 +7,15 @@ import type {
   BreakingNews,
 } from "@/lib/articles";
 
-const API_BASE_URL = "https://vercel-daily-news-api.vercel.app/api";
+function getApiBaseUrl(): string {
+  const url = process.env.API_BASE_URL;
+
+  if (!url) {
+    throw new Error("Missing API_BASE_URL environment variable");
+  }
+
+  return url;
+}
 
 function getBypassToken(): string {
   const token = process.env.VERCEL_DAILY_BYPASS_TOKEN;
@@ -19,6 +27,7 @@ function getBypassToken(): string {
   return token;
 }
 
+const API_BASE_URL = getApiBaseUrl();
 const BYPASS_TOKEN = getBypassToken();
 
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
