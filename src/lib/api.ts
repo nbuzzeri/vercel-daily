@@ -1,4 +1,5 @@
 import "server-only";
+import { cacheLife } from "next/cache";
 
 import type {
   ApiResponse,
@@ -63,10 +64,16 @@ type SearchArticlesParams = {
 };
 
 export async function getFeaturedArticles() {
+  "use cache";
+  cacheLife("minutes");
+
   return apiFetch<Article[]>("/articles?featured=true&limit=6");
 }
 
 export async function getArticleBySlug(slug: string) {
+  "use cache";
+  cacheLife("hours");
+
   return apiFetch<Article>(`/articles/${slug}`);
 }
 
