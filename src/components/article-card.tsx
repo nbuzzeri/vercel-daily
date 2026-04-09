@@ -3,6 +3,7 @@ import Link from "next/link";
 
 import type { Article } from "@/lib/articles";
 import { formatPublishedDate, imageSizes } from "@/lib/media";
+import { formatCategoryLabel } from "@/lib/format";
 
 type ArticleCardProps = {
   article: Article;
@@ -26,7 +27,9 @@ export default function ArticleCard({ article }: ArticleCardProps) {
       </div>
 
       <div className="p-4">
-        <p className="text-sm text-white/60">{article.category}</p>
+        <p className="text-sm text-white/60">
+          {formatCategoryLabel(article.category)}
+        </p>
 
         <h3 className="mt-2 text-lg font-semibold">{article.title}</h3>
 

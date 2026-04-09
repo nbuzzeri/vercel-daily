@@ -1,10 +1,7 @@
 import Link from "next/link";
 
 import { getBreakingNews } from "@/lib/api";
-
-function formatCategoryLabel(category: string) {
-  return category.replace(/-/g, " ");
-}
+import { formatCategoryLabel } from "@/lib/format";
 
 export default async function BreakingNewsBanner() {
   const breakingNews = await getBreakingNews();

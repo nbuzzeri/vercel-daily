@@ -13,6 +13,7 @@ import { formatPublishedDate, imageSizes } from "@/lib/media";
 import { getSubscriptionState } from "@/lib/subscription";
 import { ArticleContentSectionProps } from "@/lib/types";
 import ArticlePageShellFallback from "@/components/fallbacks/article-page-shell-fallback";
+import { formatCategoryLabel } from "@/lib/format";
 
 type ArticlePageProps = {
   params: Promise<{
@@ -98,7 +99,9 @@ async function ArticlePageContent({ params }: ArticlePageContentProps) {
     <>
       <article className="mx-auto flex max-w-3xl flex-col gap-6 px-4 py-16">
         <div className="flex flex-col gap-2">
-          <p className="text-sm text-white/60">{article.category}</p>
+          <p className="text-sm text-white/60">
+            {formatCategoryLabel(article.category)}
+          </p>
 
           <h1 className="text-3xl font-semibold">{article.title}</h1>
 
