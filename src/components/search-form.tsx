@@ -10,13 +10,18 @@ type SearchFormProps = {
 export default function SearchForm({ query, category }: SearchFormProps) {
   const formRef = useRef<HTMLFormElement>(null);
   const [value, setValue] = useState(query ?? "");
+  const queryRef = useRef(query);
 
   useEffect(() => {
-    if (value.length < 3 || value === query) return;
+    queryRef.current = query;
+  }, [query]);
+
+  useEffect(() => {
+    if (value.length < 3 || value === queryRef.current) return;
 
     const timeout = setTimeout(() => {
       formRef.current?.requestSubmit();
-    }, 400); // debounce
+    }, 400);
 
     return () => clearTimeout(timeout);
   }, [value]);
