@@ -19,10 +19,10 @@ function getApiBaseUrl(): string {
 }
 
 function getBypassToken(): string {
-  const token = process.env.VERCEL_DAILY_BYPASS_TOKEN;
+  const token = process.env.VDAILY_BYPASS_TOKEN;
 
   if (!token) {
-    throw new Error("Missing VERCEL_DAILY_BYPASS_TOKEN environment variable");
+    throw new Error("Missing VDAILY_BYPASS_TOKEN environment variable");
   }
 
   return token;
